@@ -15,7 +15,6 @@ namespace TechStore.Models
         public decimal Precio { get; set; }
         public Models.Categorias Categoria { get; set; }
         public Models.Estado Estado { get; set; }
-
         public string Imagen { get; set; } = string.Empty;
 
 
