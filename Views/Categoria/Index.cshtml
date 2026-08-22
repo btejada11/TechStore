@@ -1,0 +1,49 @@
+﻿@model List<TechStore.Models.Categoria>
+
+@{
+    ViewData["Title"] = "Categorías";
+
+}
+
+<Header class="Contact-header mt-4">
+    <h1>TechStore</h1>
+    <P>
+        Sistema web para administracion y consulta de informacion de TechStore
+        <P>
+            <p> @Model.Count() Categorias registrados</p>
+            </Header>
+
+        <section class="about-container">
+            <article class="about-content">
+                <h2>¿Qué categorias nos enfocamos?</h2>
+                <p>
+                    TechStore se enfoca en ofrecer una amplia variedad de categorías de productos tecnológicos, incluyendo computadoras, teléfonos inteligentes, accesorios y más. Nuestro objetivo es proporcionar a nuestros clientes la mejor experiencia de compra en línea, con productos de alta calidad y un servicio al cliente excepcional.
+                </p>
+            </article>
+            <aside>
+                <img src="~/Images/Compu.jpg" class="about-image"
+                      alt="Categorias" />
+            </aside>
+        </section>
+
+
+
+        <section class="container py-5">
+            <div class="text-center mb-5">
+                <span class="badge rounded-pill px-3 py-2 mb-2" style="--bs-badge-bg: #4D7C84; background-color: #4D7C84;">EXPLORA</span>
+                <h2 class="d-block border-bottom border-3 pb-2" style="border-color: #4D7C84 !important; width: fit-content; margin: 0 auto;" ">
+                    Nuestras Categorías
+                </h2>
+            </div>
+            <div class="categoria-grid">
+                @foreach (var categoria in Model)
+                      {
+                    <div class="card h-100 shadow-sm categoria-card">
+                        <img src="@categoria.Imagen" class="card-img-top categoria-img" alt="@categoria.Nombre"/>
+                        <div class="card-body">
+                            <h5 class="card-title">@categoria.Nombre</h5>
+                            <p class="card-text">@categoria.Descripcion</p>
+                        </div>
+                    </div> }
+            </div>
+        </section>
