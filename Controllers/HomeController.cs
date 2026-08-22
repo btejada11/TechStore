@@ -8,7 +8,13 @@ namespace TechStore.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var viewModel = new HomeView
+            {
+                Categorias = CategoriaController.ListaCategorias,
+                Productos = ProductoController.ListaProducto,
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

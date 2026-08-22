@@ -1,8 +1,85 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model TechStore.Models.HomeView
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<Header class="Contact-header mt-4">
+    <h1>TechStore</h1>
+    <ul class="list-unstyled mb-0">
+    <li>Bryan Leonel Tejada Duran &mdash; CIF: 2025010751</li>
+    <li>Andrés Elías Martínez Rivera &mdash; CIF: 2025011308</li>
+        <li>Herberth Efren rivas Granado &mdash; CIF: 2025010500</li>
+        <li>Bairon Ezequiel Reyes Ramírez &mdash; CIF: </li>
+</ul>
+</Header>
+
+<div class="container mt-5">
+    <div class="card shadow-sm about-card">
+        <div class="row g-0">
+     <div class="col-md-5">
+                <img src="~/Images/AI.jpg" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="Servicio de Biblioteca">
+     </div>
+            <div class="col-md-7">
+           <div class="card-body h-100 d-flex flex-column justify-content-center">
+                    <h4 class="card-title">Nuestro Servicio</h4>
+                    <p class="card-text">
+                        TechStore se enfoca en ofrecer una amplia variedad de categorías de productos tecnológicos, incluyendo computadoras, teléfonos inteligentes, accesorios y más. Nuestro objetivo es proporcionar a nuestros clientes la mejor experiencia de compra en línea, con productos de alta calidad y un servicio al cliente excepcional.
+                    </p>
+           </div>
+        </div>
+        </div>
+    </div>
 </div>
+
+<section class="container my-5 carousel-section">
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <h4 class="text-center mb-3">Categorías más buscadas</h4>
+            <div id="carouselGeneros" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner rounded shadow-sm">
+                    @for (int i = 0; i < Model.Categorias.Count; i++)
+                    {
+                        var categoria = Model.Categorias[i];
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <img src="@categoria.Imagen" class="d-block rounded shadow carousel-img-fixed" alt="@categoria.Nombre">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>@categoria.Nombre</h5>
+                                <a asp-controller="Categoria" asp-action="Index" class="btn btn-outline-light">Mas Categorias</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselGeneros" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselGeneros" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h4 class="text-center mb-3">Productos más buscados</h4>
+            <div id="carouselProductos" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner rounded shadow-sm">
+                    @for (int i = 0; i < Model.Productos.Count; i++)
+                    {
+                        var producto = Model.Productos[i];
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <img src="@producto.Imagen" class="d-block rounded shadow carousel-img-fixed" alt="@producto.Nombre">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>@producto.Nombre</h5>
+                                <a asp-controller="Producto" asp-action="Index" class="btn btn-outline-light">Productos Principales</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProductos" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselProductos" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</section>
