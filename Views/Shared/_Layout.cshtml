@@ -83,7 +83,7 @@
                             <i class="bi bi-tags-fill fs-5"></i>
                             <span class="d-none d-sm-inline">Categorías</span>
                         </a>
-                        <a asp-controller="Home" asp-action="AcercaDe" class="nav-link nav-link-custom d-flex align-items-center gap-3">
+                        <a asp-controller="Home" asp-action="AboutUs" class="nav-link nav-link-custom d-flex align-items-center gap-3">
                             <i class="bi bi-info-circle-fill fs-5"></i>
                             <span class="d-none d-sm-inline">Acerca de</span>
                         </a>
@@ -92,41 +92,18 @@
                             <span class="d-none d-sm-inline">Contáctenos</span>
                         </a>
                     </nav>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TechStore</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contactenos">Contactenos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">Acerca de Nosotros</a>
-                        </li>
-                    </ul>
                 </div>
 
-                <!-- derechos de autor o simplemente el pie de pagina -->
+                <!-- Derechos de autor en el pie del sidebar -->
                 <div class="pt-3 border-top border-white border-opacity-25 text-white-50 small d-none d-sm-block text-center">
                     <small class="d-block text-white-50">TechStore &copy; 2026</small>
                 </div>
             </aside>
 
-            <!-- Area de contenido principal, Ocupa el espacio derecho y empuja el footer al fondo -->
+            <!-- Área de contenido principal -->
             <div class="col min-vh-100 d-flex flex-column justify-content-between">
 
-                <!-- Aquí se renderizan las vistas secundarias (Index, Productos, etc.) -->
+                <!-- Vista secundaria -->
                 <main role="main" class="p-4 flex-grow-1">
                     @RenderBody()
                 </main>
@@ -140,7 +117,7 @@
         </div>
     </div>
 
-    <!-- Scripts requeridos al final del archivo para acelerar la carga visual -->
+    <!-- Scripts requeridos -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
