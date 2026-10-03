@@ -12,21 +12,20 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TechStore.styles.css" asp-append-version="true" />
 
-    <!-- =========================================================
-         ESTILOS EXCLUSIVOS DEL MENU LATERAL (SIDEBAR)
-         ========================================================= -->
+    <!-- Estilos exclusivos del menu lateral (Sidebar) -->
     <style>
             /* Variables de color para el sidebar */
             :root {
-                --sidebar-bg-start: #1B4079; /* Azul marino principal */
-                --sidebar-bg-end: #122d56; /* Azul oscuro degradado */
-                --accent-glow: #00d2ff; /* Azul neón para bordes activos */
+                --sidebar-bg-start: #1B4079;
+                --sidebar-bg-end: #122d56;
+                --accent-glow: #00d2ff;
             }
 
             /* Tipografia general y fondo para el cuerpo de la pagina */
             body {
                 font-family: 'Inter', sans-serif;
                 background-color: #f4f6f9;
+                overflow-x: hidden;
             }
 
             /* Contenedor principal del sidebar */
@@ -35,13 +34,14 @@
                 font-family: 'Plus Jakarta Sans', sans-serif;
                 border-right: 1px solid rgba(255, 255, 255, 0.08);
                 box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
             }
 
-            /* Estilos del título/logo */
+            /* Estilos del titulo / logo */
             .brand-title {
                 font-family: 'Orbitron', sans-serif;
                 font-weight: 900;
-                font-size: 1.3rem;
+                font-size: 1.2rem;
                 letter-spacing: 1.5px;
                 color: #ffffff;
             }
@@ -50,7 +50,7 @@
                     color: var(--accent-glow);
                 }
 
-            /* Encabezados de sección (Navegación / Información) */
+            /* Encabezados de seccion (Navegacion / Informacion) */
             .menu-section-label {
                 font-size: 0.72rem;
                 text-transform: uppercase;
@@ -60,7 +60,7 @@
                 padding: 12px 0 6px 16px;
             }
 
-            /* Diseño base para las opciones del menú lateral */
+            /* Diseño base para las opciones del menu lateral */
             .nav-link-custom {
                 color: rgba(255, 255, 255, 0.75) !important;
                 border-radius: 10px;
@@ -71,6 +71,7 @@
                 display: flex;
                 align-items: center;
                 gap: 12px;
+                white-space: nowrap;
             }
 
                 /* Efecto al pasar el mouse (Hover) */
@@ -80,7 +81,7 @@
                     transform: translateX(4px);
                 }
 
-                /* Opción activa seleccionada */
+                /* Opcion activa seleccionada */
                 .nav-link-custom.active {
                     background: rgba(255, 255, 255, 0.2);
                     color: #ffffff !important;
@@ -89,7 +90,7 @@
                     border-left: 4px solid var(--accent-glow);
                 }
 
-                /* Iconos dentro del menú */
+                /* Iconos dentro del menu */
                 .nav-link-custom i {
                     color: #ffffff;
                     font-size: 1.1rem;
@@ -100,88 +101,89 @@
                 padding: 16px;
                 border-top: 1px solid rgba(255, 255, 255, 0.08);
             }
+
+            /* Ajuste de contenedor principal para evitar scroll horizontal innecesario */
+            .main-content {
+                min-width: 0;
+                width: 100%;
+            }
     </style>
 </head>
 <body>
     @{
-        // Detección automática del controlador y la vista activa para resaltar el botón correspondiente
         string currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
         string currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
     }
 
     <div class="container-fluid p-0">
-        <div class="row g-0 flex-nowrap">
+        <div class="row g-0 flex-nowrap min-vh-100">
 
-            <!-- =========================================================
-                 PANEL LATERAL IZQUIERDO (SIDEBAR)
-                 ========================================================= -->
-            <div class="col-auto col-md-3 col-xl-2 px-0 custom-sidebar min-vh-100 d-flex flex-column justify-content-between">
+            <!-- PANEL LATERAL IZQUIERDO (SIDEBAR) -->
+            <div class="col-auto col-md-3 col-lg-2 px-0 custom-sidebar d-flex flex-column justify-content-between">
                 <div class="d-flex flex-column align-items-center align-items-sm-start text-white w-100">
 
-                    <!-- Encabezado con Logo (Solo texto sin iconos) -->
+                    <!-- Encabezado con Logo -->
                     <a asp-controller="Home" asp-action="Index" class="d-flex align-items-center py-4 px-3 mb-2 text-white text-decoration-none border-bottom border-white border-opacity-10 w-100 justify-content-center justify-content-sm-start">
                         <span class="brand-title ps-sm-2">TECH<span>STORE</span></span>
                     </a>
 
-                    <!-- Sección 1: Navegación Principal -->
-                    <div class="menu-section-label d-none d-sm-block w-100">Navegación</div>
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
+                    <!-- Seccion 1: Navegacion Principal -->
+                    <div class="menu-section-label d-none d-sm-block w-100">Navegacion</div>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100 px-2" id="menu">
                         <li class="nav-item w-100">
                             <a asp-controller="Home" asp-action="Index"
-                               class="nav-link nav-link-custom align-middle @(currentController == "Home" && currentAction == "Index" ? "active" : "")">
+                               class="nav-link nav-link-custom @(currentController == "Home" && currentAction == "Index" ? "active" : "")">
                                 <i class="bi bi-house-door-fill"></i>
                                 <span class="d-none d-sm-inline">Inicio</span>
                             </a>
                         </li>
                         <li class="w-100">
                             <a asp-controller="Producto" asp-action="Index"
-                               class="nav-link nav-link-custom align-middle @(currentController == "Producto" ? "active" : "")">
+                               class="nav-link nav-link-custom @(currentController == "Producto" ? "active" : "")">
                                 <i class="bi bi-grid-fill"></i>
                                 <span class="d-none d-sm-inline">Productos</span>
                             </a>
                         </li>
                         <li class="w-100">
                             <a asp-controller="Categoria" asp-action="Index"
-                               class="nav-link nav-link-custom align-middle @(currentController == "Categoria" ? "active" : "")">
+                               class="nav-link nav-link-custom @(currentController == "Categoria" ? "active" : "")">
                                 <i class="bi bi-tags-fill"></i>
-                                <span class="d-none d-sm-inline">Categorías</span>
+                                <span class="d-none d-sm-inline">Categorias</span>
                             </a>
                         </li>
 
-                        <!-- Sección 2: Información del Sistema -->
-                        <div class="menu-section-label d-none d-sm-block w-100 mt-2">Información</div>
+                        <!-- Seccion 2: Informacion del Sistema -->
+                        <div class="menu-section-label d-none d-sm-block w-100 mt-2">Informacion</div>
                         <li class="w-100">
                             <a asp-controller="Home" asp-action="AboutUs"
-                               class="nav-link nav-link-custom align-middle @(currentController == "Home" && currentAction == "AboutUs" ? "active" : "")">
+                               class="nav-link nav-link-custom @(currentController == "Home" && currentAction == "AboutUs" ? "active" : "")">
                                 <i class="bi bi-info-circle-fill"></i>
                                 <span class="d-none d-sm-inline">Acerca de</span>
                             </a>
                         </li>
                         <li class="w-100">
                             <a asp-controller="Home" asp-action="Contactenos"
-                               class="nav-link nav-link-custom align-middle @(currentController == "Home" && currentAction == "Contactenos" ? "active" : "")">
+                               class="nav-link nav-link-custom @(currentController == "Home" && currentAction == "Contactenos" ? "active" : "")">
                                 <i class="bi bi-envelope-fill"></i>
-                                <span class="d-none d-sm-inline">Contáctenos</span>
+                                <span class="d-none d-sm-inline">Contactenos</span>
                             </a>
                         </li>
                     </ul>
                 </div>
 
-                <!-- Pie de página con copyright y espacio despejado -->
+                <!-- Pie de pagina del sidebar -->
                 <div class="sidebar-footer text-center text-sm-start w-100">
                     <span class="text-white-50 small d-none d-sm-inline fw-semibold ps-sm-2">TechStore System &copy; 2026</span>
                 </div>
             </div>
 
-            <!-- =========================================================
-                 CONTENIDO PRINCIPAL DERECHO (Renderizado dinámico)
-                 ========================================================= -->
-            <div class="col py-3 px-4 d-flex flex-column justify-content-between min-vh-100">
+            <!-- CONTENIDO PRINCIPAL DERECHO (Renderizado dinamico) -->
+            <div class="col main-content py-3 px-3 px-md-4 d-flex flex-column justify-content-between">
                 <main role="main" class="pb-3">
                     @RenderBody()
                 </main>
 
-                <!-- Pie de página general del sitio -->
+                <!-- Pie de pagina general del sitio -->
                 <footer class="border-top footer text-muted text-center pt-3 mt-auto">
                     Proyecto FrontEnd - ASP.NET Core MVC | TechStore 2026
                 </footer>
@@ -190,8 +192,9 @@
         </div>
     </div>
 
-    <!-- Carga de scripts necesarios para el funcionamiento del proyecto -->
+    <!-- Carga de scripts necesarios -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

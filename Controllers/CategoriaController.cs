@@ -1,27 +1,96 @@
-﻿// Controllers/CategoriaController.cs
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using TechStore.Models;
 using TechStore.Services;
 
 namespace TechStore.Controllers
 {
+    // Controlador exclusivo para la gestión de Categorías
     public class CategoriaController : Controller
     {
-        private readonly ITechStoreService _storeService;
+        private readonly ICategoriaService _categoriaService;
 
-        // El constructor inyecta correctamente el servicio compartido
-        public CategoriaController(ITechStoreService storeService)
+        public CategoriaController(ICategoriaService categoriaService)
         {
-            _storeService = storeService;
+            _categoriaService = categoriaService;
         }
 
-        // CORRECCIÓN: El método debe ser asíncrono y solicitar los datos al servicio
+        // Listado general de Categorías
         public async Task<IActionResult> Index()
         {
-            // Solicitamos la lista real a Entity Framework Core
-            var categorias = await _storeService.ObtenerCategoriasAsync();
-
-            // Le pasamos la lista de la BD a la vista obligatoriamente
+            var categorias = await _categoriaService.ObtenerTodasAsync();
             return View(categorias);
+        }
+
+        // GET: Categoria/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Categoria/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Categoria categoria)
+        {
+            if (ModelState.IsValid)
+            {
+                await _categoriaService.CrearAsync(categoria);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(categoria);
+        }
+
+        // GET: Categoria/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            var categoria = await _categoriaService.ObtenerPorIdAsync(id);
+            if (categoria == null)
+            {
+                return NotFound();
+            }
+            return View(categoria);
+        }
+
+        // POST: Categoria/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Categoria categoria)
+        {
+            if (id != categoria.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                await _categoriaService.ActualizarAsync(categoria);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(categoria);
+        }
+
+        // GET: Categoria/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            var categoria = await _categoriaService.ObtenerPorIdAsync(id);
+            if (categoria == null)
+            {
+                return NotFound();
+            }
+            return View(categoria);
+        }
+
+        // POST: Categoria/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var (exito, mensaje) = await _categoriaService.EliminarAsync(id);
+
+            // Se asigna el mensaje descriptivo a TempData para mostrarlo en la vista
+            TempData[exito ? "Exito" : "Error"] = mensaje;
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

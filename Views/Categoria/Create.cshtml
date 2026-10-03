@@ -1,0 +1,55 @@
+﻿@model TechStore.Models.Categoria
+
+@{
+    ViewData["Title"] = "Agregar Categoría";
+}
+
+<!-- Título e instrucciones principales de la vista -->
+<div class="mb-4">
+    <h1 class="fw-bold text-dark">Agregar Categoría</h1>
+    <p class="text-muted">Completa los datos para registrar una nueva categoría en la tienda.</p>
+</div>
+
+<!-- Formulario de creacion con diseño alineado al modulo de Productos -->
+<div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <!-- Campo para el nombre de la categoria -->
+        <div class="mb-3">
+            <label asp-for="Nombre" class="form-label fw-semibold text-dark">Nombre</label>
+            <input asp-for="Nombre" class="form-control form-control-lg rounded-3" placeholder="Ej: Laptops, Periféricos, Redes..." />
+            <span asp-validation-for="Nombre" class="text-danger small"></span>
+        </div>
+
+        <!-- Campo para la descripcion -->
+        <div class="mb-3">
+            <label asp-for="Descripcion" class="form-label fw-semibold text-dark">Descripción</label>
+            <textarea asp-for="Descripcion" class="form-control form-control-lg rounded-3" rows="4" placeholder="Breve descripción de la categoría..."></textarea>
+            <span asp-validation-for="Descripcion" class="text-danger small"></span>
+        </div>
+
+        <!-- Campo para la URL de la imagen -->
+        <div class="mb-4">
+            <label asp-for="Imagen" class="form-label fw-semibold text-dark">URL de la imagen</label>
+            <input asp-for="Imagen" class="form-control form-control-lg rounded-3" placeholder="https://ejemplo.com/imagen.jpg" />
+            <span asp-validation-for="Imagen" class="text-danger small"></span>
+        </div>
+
+        <!-- Botones de accion (Guardar y Cancelar) -->
+        <div class="d-flex align-items-center gap-2 pt-2">
+            <button type="submit" class="btn btn-success btn-lg px-4 rounded-pill fw-bold d-inline-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill"></i> Guardar
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-lg px-4 rounded-pill fw-semibold">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

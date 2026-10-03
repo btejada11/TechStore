@@ -1,4 +1,3 @@
-// Program.cs
 using Microsoft.EntityFrameworkCore;
 using TechStore.Data;
 using TechStore.Services;
@@ -8,11 +7,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Líneas agregadas para la configuración de BD y el servicio
+// Lineas agregadas para la configuracion de BD y los servicios
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Registrar el servicio de TechStore, que es el de productos eso creo
 builder.Services.AddScoped<ITechStoreService, TechStoreService>();
+
+// Registrar el nuevo servicio de Categorias
+builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 
 var app = builder.Build();
 
