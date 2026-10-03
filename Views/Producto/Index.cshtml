@@ -22,6 +22,22 @@
     </div>
 </div>
 
+<!-- Aviso oculto que lee el script para mostrar el mensaje tras eliminar -->
+@if (TempData["Eliminado"] != null)
+{
+    <div id="mensaje-eliminado" data-mensaje="@TempData["Eliminado"]" hidden></div>
+}
+
+<!-- Aviso oculto que lee el script para mostrar el resultado de la compra (éxito o error) -->
+@if (TempData["Exito"] != null)
+{
+    <div id="mensaje-compra" data-tipo="success" data-mensaje="@TempData["Exito"]" hidden></div>
+}
+@if (TempData["Error"] != null)
+{
+    <div id="mensaje-compra" data-tipo="error" data-mensaje="@TempData["Error"]" hidden></div>
+}
+
 <!-- GRILLA RESPONSIVA DE PRODUCTOS -->
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
     @if (!Model.Any())
@@ -36,7 +52,7 @@
         {
             <div class="col">
                 <!-- Tarjeta individual de producto con animación suave -->
-                <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden position-relative">
+                <div class="card producto-card h-100 border-0 shadow-sm rounded-3 overflow-hidden position-relative">
 
                     <!-- Etiqueta superior del estado del producto (Nuevo u Open Box) -->
                     <div class="position-absolute top-0 end-0 m-2 z-1">
@@ -68,25 +84,47 @@
                             @item.Descripcion
                         </p>
 
+                        <!-- Indicador de stock del producto (Agotado, Stock bajo o Stock disponible) -->
+                        <div class="mb-1">
+                            @if (item.Stock == 0)
+                            {
+                                <span class="badge bg-danger">Agotado</span>
+                            }
+                            else if (item.Stock <= 5)
+                            {
+                                <span class="badge bg-warning text-dark">Stock bajo: @item.Stock</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-light text-dark border">Stock: @item.Stock</span>
+                            }
+                        </div>
+
                         <!-- Panel de Acciones de Administración (Editar y Eliminar) -->
                         <div class="d-flex gap-2 mb-2 mt-2">
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm w-50 rounded-pill fw-semibold">
                                 <i class="bi bi-pencil-square"></i> Editar
                             </a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm w-50 rounded-pill fw-semibold">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </a>
+                            <!-- Eliminar con confirmación de SweetAlert (se activa desde site.js con la clase swal-delete-form) -->
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="swal-delete-form w-50" data-nombre="@item.Nombre">
+                                <button type="submit" class="btn btn-outline-danger btn-sm w-100 rounded-pill fw-semibold">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            </form>
                         </div>
 
                         <!-- Pie de la tarjeta: Precio y botón de acción -->
                         <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
                             <div>
-                                <small class="text-muted d-block" style="font-size: 0.7 orem;">Precio</small>
+                                <small class="text-muted d-block" style="font-size: 0.7rem;">Precio</small>
                                 <span class="fs-5 fw-bold text-dark">$@item.Precio.ToString("F2")</span>
                             </div>
-                            <button class="btn text-white btn-sm rounded-pill px-3 fw-semibold" style="background-color: #1B4079;">
-                                <i class="bi bi-cart-plus me-1"></i> Comprar
-                            </button>
+                            <!-- Comprar descuenta una unidad del stock y se deshabilita si el producto está agotado -->
+                            <form asp-action="Comprar" asp-route-id="@item.Id" method="post">
+                                <button type="submit" class="btn text-white btn-sm rounded-pill px-3 fw-semibold" style="background-color: #1B4079;" disabled="@(item.Stock == 0)">
+                                    <i class="bi bi-cart-plus me-1"></i> Comprar
+                                </button>
+                            </form>
                         </div>
                     </div>
 

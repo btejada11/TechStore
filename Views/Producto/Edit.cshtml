@@ -1,0 +1,88 @@
+﻿@model TechStore.Models.Producto
+
+@{
+    ViewData["Title"] = "Editar Producto";
+}
+
+<!-- ENCABEZADO DEL FORMULARIO -->
+<div class="mb-4 pb-3 border-bottom mt-3">
+    <h2 class="fw-bold text-dark mb-1">Editar Producto</h2>
+    <p class="text-muted small mb-0">Modifica los datos del producto y guarda los cambios.</p>
+</div>
+
+<!-- FORMULARIO DE EDICIÓN -->
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-body p-4">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Id oculto para identificar el producto al guardar -->
+            <input type="hidden" asp-for="Id" />
+
+            <div class="row g-3">
+                <!-- Nombre -->
+                <div class="col-md-6">
+                    <label asp-for="Nombre" class="form-label fw-semibold"></label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                </div>
+
+                <!-- Categoría (muestra la categoría actual del producto) -->
+                <div class="col-md-6">
+                    <label asp-for="CategoriaId" class="form-label fw-semibold">Categoría</label>
+                    <select asp-for="CategoriaId" asp-items="ViewBag.Categorias" class="form-select"></select>
+                    <span asp-validation-for="CategoriaId" class="text-danger small"></span>
+                </div>
+
+                <!-- Descripción -->
+                <div class="col-12">
+                    <label asp-for="Descripcion" class="form-label fw-semibold">Descripción</label>
+                    <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Descripcion" class="text-danger small"></span>
+                </div>
+
+                <!-- Precio -->
+                <div class="col-md-4">
+                    <label asp-for="Precio" class="form-label fw-semibold"></label>
+                    <input asp-for="Precio" class="form-control" />
+                    <span asp-validation-for="Precio" class="text-danger small"></span>
+                </div>
+
+                <!-- Stock -->
+                <div class="col-md-4">
+                    <label asp-for="Stock" class="form-label fw-semibold"></label>
+                    <input asp-for="Stock" class="form-control" />
+                    <span asp-validation-for="Stock" class="text-danger small"></span>
+                </div>
+
+                <!-- Estado (Nuevo u Open Box) -->
+                <div class="col-md-4">
+                    <label asp-for="Estado" class="form-label fw-semibold"></label>
+                    <select asp-for="Estado" asp-items="Html.GetEnumSelectList<TechStore.Models.Estado>()" class="form-select"></select>
+                    <span asp-validation-for="Estado" class="text-danger small"></span>
+                </div>
+
+                <!-- Imagen -->
+                <div class="col-12">
+                    <label asp-for="Imagen" class="form-label fw-semibold">URL de la imagen</label>
+                    <input asp-for="Imagen" class="form-control" />
+                    <span asp-validation-for="Imagen" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-warning rounded-pill px-4 fw-semibold">
+                    <i class="bi bi-save me-1"></i> Guardar cambios
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

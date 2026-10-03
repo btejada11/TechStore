@@ -9,5 +9,6 @@ namespace TechStore.Services
         Task GuardarProductoAsync(Producto producto);
         Task EliminarProductoAsync(int id);
         Task<IEnumerable<Categoria>> ObtenerCategoriasAsync();
+        Task<bool> ComprarProductoAsync(int id);
     }
 }
