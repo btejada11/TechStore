@@ -1,0 +1,68 @@
+﻿@model TechStore.Models.Categoria
+
+@{
+    ViewData["Title"] = "Eliminar Categoría - TechStore";
+}
+
+<div class="container-fluid px-0 mb-5">
+
+    <!-- Encabezado simple idéntico al de Eliminar Producto -->
+    <div class="mb-4">
+        <h1 class="fw-bold text-dark mb-1">Eliminar Categoría</h1>
+        <p class="text-muted mb-0">Confirma si deseas eliminar esta categoría del catálogo.</p>
+    </div>
+
+    <!-- Contenedor blanco principal con bordes redondeados y sombra -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+
+        <!-- Alerta amarilla de advertencia (sin texto en negrita) -->
+        <div class="alert alert-warning border-0 rounded-3 d-flex align-items-center gap-2 mb-4" style="background-color: #fff3cd; color: #856404;" role="alert">
+            <i class="bi bi-exclamation-triangle-fill flex-shrink-0"></i>
+            <div>
+                ¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.
+            </div>
+        </div>
+
+        <!-- Campos en cajas de solo lectura -->
+        <div class="row g-3 mb-4">
+            <!-- Nombre -->
+            <div class="col-12">
+                <label class="form-label fw-bold text-muted small mb-1">Nombre</label>
+                <div class="form-control bg-light border-1 rounded-3 py-2 text-dark">
+                    @Model.Nombre
+                </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="col-12">
+                <label class="form-label fw-bold text-muted small mb-1">Descripción</label>
+                <div class="form-control bg-light border-1 rounded-3 py-2 text-dark" style="min-height: 80px; white-space: pre-line;">
+                    @Model.Descripcion
+                </div>
+            </div>
+
+            <!-- Ruta / URL de la Imagen -->
+            <div class="col-12">
+                <label class="form-label fw-bold text-muted small mb-1">URL de la imagen</label>
+                <div class="form-control bg-light border-1 rounded-3 py-2 text-dark text-truncate">
+                    @Model.Imagen
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario de confirmación y botones -->
+        <form asp-action="Delete" class="d-flex align-items-center gap-2">
+            <input type="hidden" asp-for="Id" />
+
+            <button type="submit" class="btn btn-danger fw-semibold px-4 py-2 rounded-pill shadow-sm d-inline-flex align-items-center gap-2" style="background-color: #dc3545; border: none;">
+                <i class="bi bi-trash-fill"></i> Eliminar Categoría
+            </button>
+
+            <a asp-action="Index" class="btn btn-outline-secondary fw-semibold px-4 py-2 rounded-pill">
+                Cancelar
+            </a>
+        </form>
+
+    </div>
+
+</div>

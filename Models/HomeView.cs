@@ -1,8 +1,9 @@
-﻿namespace TechStore.Models
+﻿// Models/HomeView.cs
+namespace TechStore.Models
 {
     public class HomeView
     {
-        public List<Categoria> Categorias { get; set; } = new();
-        public List<Producto> Productos { get; set; } = new();
+        public IEnumerable<Categoria> Categorias { get; set; } = new List<Categoria>();
+        public IEnumerable<Producto> Productos { get; set; } = new List<Producto>();
     }
 }

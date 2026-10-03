@@ -1,17 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TechStore.Models;
+using TechStore.Services; // <- Asegúrate de que este using esté incluido
 
 namespace TechStore.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ITechStoreService _storeService;
+
+        // Constructor que inyecta el servicio de la base de datos
+        public HomeController(ITechStoreService storeService)
+        {
+            _storeService = storeService;
+        }
+
+        // El método Index ahora es asíncrono (Task<IActionResult>)
+        public async Task<IActionResult> Index()
         {
             var viewModel = new HomeView
             {
-                Categorias = CategoriaController.ListaCategorias,
-                Productos = ProductoController.ListaProducto,
+                // Cargamos los datos reales desde Entity Framework Core de forma asíncrona
+                Categorias = await _storeService.ObtenerCategoriasAsync(),
+                Productos = await _storeService.ObtenerProductosAsync()
             };
 
             return View(viewModel);
@@ -22,10 +33,14 @@ namespace TechStore.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Contactenos()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
+        }
+
+        public IActionResult AboutUs()
+        {
+            return View();
         }
     }
 }

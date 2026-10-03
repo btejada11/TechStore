@@ -1,0 +1,64 @@
+﻿@model TechStore.Models.Producto
+
+@{
+    ViewData["Title"] = "Eliminar Producto";
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold mb-1 text-dark">Eliminar Producto</h2>
+    <p class="text-muted mb-0">Confirma si deseas eliminar este producto del catálogo.</p>
+</div>
+
+<div class="card border-0 shadow-sm rounded-3">
+    <div class="card-body p-4">
+
+        <div class="alert alert-warning border-0 mb-4 d-flex align-items-center gap-2">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <span>¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.</span>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small mb-1">Nombre</label>
+                <div class="form-control bg-light">@Model.Nombre</div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small mb-1">Categoría</label>
+                <div class="form-control bg-light">@(Model.Categoria?.Nombre ?? "Sin Categoria")</div>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label fw-bold text-muted small mb-1">Descripción</label>
+                <div class="form-control bg-light" style="min-height: 80px;">@Model.Descripcion</div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-muted small mb-1">Precio</label>
+                <div class="form-control bg-light">$@Model.Precio.ToString("F2")</div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-muted small mb-1">Stock</label>
+                <div class="form-control bg-light">@Model.Stock</div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-muted small mb-1">Estado</label>
+                <div class="form-control bg-light">@Model.Estado</div>
+            </div>
+        </div>
+
+        <!-- Acciones -->
+        <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-flex gap-2">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger px-4 rounded-pill fw-semibold">
+                <i class="bi bi-trash-fill me-1"></i> Eliminar Producto
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary px-4 rounded-pill fw-semibold">
+                Cancelar
+            </a>
+        </form>
+
+    </div>
+</div>

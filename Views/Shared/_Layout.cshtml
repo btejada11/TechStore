@@ -1,50 +1,198 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TechStore</title>
-    <script type="importmap"></script>
+
+    <!-- Hojas de estilo externas: Bootstrap, Iconos y Fuentes de Google -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TechStore.styles.css" asp-append-version="true" />
+
+    <!-- Estilos exclusivos del menu lateral (Sidebar) -->
+    <style>
+            /* Variables de color para el sidebar */
+            :root {
+                --sidebar-bg-start: #1B4079;
+                --sidebar-bg-end: #122d56;
+                --accent-glow: #00d2ff;
+            }
+
+            /* Tipografia general y fondo para el cuerpo de la pagina */
+            body {
+                font-family: 'Inter', sans-serif;
+                background-color: #f4f6f9;
+                overflow-x: hidden;
+            }
+
+            /* Contenedor principal del sidebar */
+            .custom-sidebar {
+                background: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%) !important;
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                border-right: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+            }
+
+            /* Estilos del titulo / logo */
+            .brand-title {
+                font-family: 'Orbitron', sans-serif;
+                font-weight: 900;
+                font-size: 1.2rem;
+                letter-spacing: 1.5px;
+                color: #ffffff;
+            }
+
+                .brand-title span {
+                    color: var(--accent-glow);
+                }
+
+            /* Encabezados de seccion (Navegacion / Informacion) */
+            .menu-section-label {
+                font-size: 0.72rem;
+                text-transform: uppercase;
+                letter-spacing: 1.2px;
+                color: rgba(255, 255, 255, 0.5);
+                font-weight: 700;
+                padding: 12px 0 6px 16px;
+            }
+
+            /* Diseño base para las opciones del menu lateral */
+            .nav-link-custom {
+                color: rgba(255, 255, 255, 0.75) !important;
+                border-radius: 10px;
+                padding: 10px 14px;
+                font-weight: 500;
+                font-size: 0.95rem;
+                transition: all 0.25s ease-in-out;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                white-space: nowrap;
+            }
+
+                /* Efecto al pasar el mouse (Hover) */
+                .nav-link-custom:hover {
+                    background: rgba(255, 255, 255, 0.12);
+                    color: #ffffff !important;
+                    transform: translateX(4px);
+                }
+
+                /* Opcion activa seleccionada */
+                .nav-link-custom.active {
+                    background: rgba(255, 255, 255, 0.2);
+                    color: #ffffff !important;
+                    font-weight: 600;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                    border-left: 4px solid var(--accent-glow);
+                }
+
+                /* Iconos dentro del menu */
+                .nav-link-custom i {
+                    color: #ffffff;
+                    font-size: 1.1rem;
+                }
+
+            /* Pie del sidebar */
+            .sidebar-footer {
+                padding: 16px;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            /* Ajuste de contenedor principal para evitar scroll horizontal innecesario */
+            .main-content {
+                min-width: 0;
+                width: 100%;
+            }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TechStore</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+    @{
+        string currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+        string currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    }
+
+    <div class="container-fluid p-0">
+        <div class="row g-0 flex-nowrap min-vh-100">
+
+            <!-- PANEL LATERAL IZQUIERDO (SIDEBAR) -->
+            <div class="col-auto col-md-3 col-lg-2 px-0 custom-sidebar d-flex flex-column justify-content-between">
+                <div class="d-flex flex-column align-items-center align-items-sm-start text-white w-100">
+
+                    <!-- Encabezado con Logo -->
+                    <a asp-controller="Home" asp-action="Index" class="d-flex align-items-center py-4 px-3 mb-2 text-white text-decoration-none border-bottom border-white border-opacity-10 w-100 justify-content-center justify-content-sm-start">
+                        <span class="brand-title ps-sm-2">TECH<span>STORE</span></span>
+                    </a>
+
+                    <!-- Seccion 1: Navegacion Principal -->
+                    <div class="menu-section-label d-none d-sm-block w-100">Navegacion</div>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100 px-2" id="menu">
+                        <li class="nav-item w-100">
+                            <a asp-controller="Home" asp-action="Index"
+                               class="nav-link nav-link-custom @(currentController == "Home" && currentAction == "Index" ? "active" : "")">
+                                <i class="bi bi-house-door-fill"></i>
+                                <span class="d-none d-sm-inline">Inicio</span>
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="w-100">
+                            <a asp-controller="Producto" asp-action="Index"
+                               class="nav-link nav-link-custom @(currentController == "Producto" ? "active" : "")">
+                                <i class="bi bi-grid-fill"></i>
+                                <span class="d-none d-sm-inline">Productos</span>
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categoria" asp-action="Index">Categorias</a>
+                        <li class="w-100">
+                            <a asp-controller="Categoria" asp-action="Index"
+                               class="nav-link nav-link-custom @(currentController == "Categoria" ? "active" : "")">
+                                <i class="bi bi-tags-fill"></i>
+                                <span class="d-none d-sm-inline">Categorias</span>
+                            </a>
+                        </li>
+
+                        <!-- Seccion 2: Informacion del Sistema -->
+                        <div class="menu-section-label d-none d-sm-block w-100 mt-2">Informacion</div>
+                        <li class="w-100">
+                            <a asp-controller="Home" asp-action="AboutUs"
+                               class="nav-link nav-link-custom @(currentController == "Home" && currentAction == "AboutUs" ? "active" : "")">
+                                <i class="bi bi-info-circle-fill"></i>
+                                <span class="d-none d-sm-inline">Acerca de</span>
+                            </a>
+                        </li>
+                        <li class="w-100">
+                            <a asp-controller="Home" asp-action="Contactenos"
+                               class="nav-link nav-link-custom @(currentController == "Home" && currentAction == "Contactenos" ? "active" : "")">
+                                <i class="bi bi-envelope-fill"></i>
+                                <span class="d-none d-sm-inline">Contactenos</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
+
+                <!-- Pie de pagina del sidebar -->
+                <div class="sidebar-footer text-center text-sm-start w-100">
+                    <span class="text-white-50 small d-none d-sm-inline fw-semibold ps-sm-2">TechStore System &copy; 2026</span>
+                </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+            <!-- CONTENIDO PRINCIPAL DERECHO (Renderizado dinamico) -->
+            <div class="col main-content py-3 px-3 px-md-4 d-flex flex-column justify-content-between">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+
+                <!-- Pie de pagina general del sitio -->
+                <footer class="border-top footer text-muted text-center pt-3 mt-auto">
+                    Proyecto FrontEnd - ASP.NET Core MVC | TechStore 2026
+                </footer>
+            </div>
+
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - TechStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <!-- Carga de scripts necesarios -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
