@@ -68,7 +68,7 @@ namespace TechStore.Controllers
             return View(producto);
         }
 
-        // GET: Eliminar
+        // GET: Eliminar (página de respaldo, la confirmación principal es el SweetAlert del listado)
         public async Task<IActionResult> Delete(int id)
         {
             var producto = await _storeService.ObtenerProductoPorIdAsync(id);
@@ -82,7 +82,23 @@ namespace TechStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var producto = await _storeService.ObtenerProductoPorIdAsync(id);
+            if (producto == null) return NotFound();
+
             await _storeService.EliminarProductoAsync(id);
+            TempData["Eliminado"] = $"El producto \"{producto.Nombre}\" fue eliminado correctamente.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: Comprar (descuenta una unidad del stock)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Comprar(int id)
+        {
+            var exito = await _storeService.ComprarProductoAsync(id);
+            TempData[exito ? "Exito" : "Error"] = exito
+                ? "¡Compra realizada con éxito!"
+                : "No se pudo completar la compra: producto agotado o inexistente.";
             return RedirectToAction(nameof(Index));
         }
     }

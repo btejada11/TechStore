@@ -16,12 +16,11 @@
          ESTILOS EXCLUSIVOS DEL MENU LATERAL (SIDEBAR)
          ========================================================= -->
     <style>
-            /* Variables de color personalizadas para el sidebar */
-            :root {
-                --sidebar-bg-start: #1B4079; /* Azul marino principal del proyecto */
-                --sidebar-bg-end: #122d56; /* Azul más oscuro para crear un degradado elegante */
-                --accent-glow: #00d2ff; /* Azul neón para resaltar detalles e iconos */
-            }
+        /* Tipografia general y fondo para el cuerpo de la pagina */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f9;
+        }
 
             /* Contenedor principal del sidebar */
             .custom-sidebar {
@@ -31,100 +30,32 @@
                 box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
             }
 
-                /* Titulo del Logo (Tipografía futurista Orbitron) */
-                .custom-sidebar .brand-title {
-                    font-family: 'Orbitron', sans-serif;
-                    font-size: 1.4rem;
-                    letter-spacing: 2px;
-                    color: #ffffff;
-                    font-weight: 900;
-                    text-transform: uppercase;
-                    text-shadow: 0 0 12px rgba(0, 210, 255, 0.3);
+        /* Sidebar con el color azul marino (#1B4079) */
+        .sidebar-custom {
+            background: #1B4079;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        }
+
+            /* Diseño base para las opciones del menu lateral */
+            .nav-link-custom {
+                color: #dbeaff;
+                border-radius: 10px;
+                padding: 12px 16px;
+                font-weight: 500;
+                transition: all 0.25s ease;
+            }
+
+                /* Efecto al pasar el mouse */
+                .nav-link-custom:hover, .nav-link-custom.active {
+                    background: rgba(255, 255, 255, 0.15);
+                    color: #ffffff !important;
+                    transform: translateX(4px);
                 }
 
-                    /* Segunda palabra del logo en color celeste neón */
-                    .custom-sidebar .brand-title span {
-                        color: var(--accent-glow);
-                    }
-
-                /* Etiquetado de las categorías (NAVEGACIÓN / INFORMACIÓN) */
-                .custom-sidebar .menu-section-label {
-                    font-size: 0.65rem;
-                    text-transform: uppercase;
-                    letter-spacing: 1.8px;
-                    color: rgba(255, 255, 255, 0.45);
-                    font-weight: 700;
-                    padding: 1.5rem 1.25rem 0.5rem;
-                }
-
-                /* Diseño por defecto de las opciones/botones del menú */
-                .custom-sidebar .nav-link-custom {
-                    color: #c2d7f2;
-                    border-radius: 10px;
-                    padding: 11px 16px;
-                    font-weight: 500;
-                    font-size: 0.93rem;
-                    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    margin: 3px 10px;
-                    position: relative;
-                    background: transparent;
-                }
-
-                    /* Estilos y animación para los iconos del menú */
-                    .custom-sidebar .nav-link-custom i {
-                        font-size: 1.2rem;
-                        color: rgba(255, 255, 255, 0.8);
-                        transition: transform 0.25s ease, color 0.25s ease;
-                    }
-
-                    /* Efecto al pasar el cursor (Hover) sobre cada opción */
-                    .custom-sidebar .nav-link-custom:hover {
-                        color: #ffffff !important;
-                        background-color: rgba(255, 255, 255, 0.08);
-                        transform: translateX(4px);
-                    }
-
-                        /* Animación de zoom en los iconos al pasar el cursor */
-                        .custom-sidebar .nav-link-custom:hover i {
-                            color: var(--accent-glow);
-                            transform: scale(1.15);
-                        }
-
-                    /* Estado activo: Resalta la opción en la que se encuentra el usuario */
-                    .custom-sidebar .nav-link-custom.active {
-                        background: rgba(255, 255, 255, 0.15) !important;
-                        color: #ffffff !important;
-                        font-weight: 700;
-                        backdrop-filter: blur(5px);
-                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                    }
-
-                        /* Linea vertical neón que marca la opción activa */
-                        .custom-sidebar .nav-link-custom.active::before {
-                            content: '';
-                            position: absolute;
-                            left: -10px;
-                            top: 20%;
-                            height: 60%;
-                            width: 4px;
-                            background-color: var(--accent-glow);
-                            border-radius: 0 4px 4px 0;
-                            box-shadow: 0 0 8px var(--accent-glow);
-                        }
-
-                        .custom-sidebar .nav-link-custom.active i {
-                            color: var(--accent-glow) !important;
-                        }
-
-                /* Pie de página del sidebar con margen para espacio inferior */
-                .custom-sidebar .sidebar-footer {
-                    padding: 1.25rem;
-                    border-top: 1px solid rgba(255, 255, 255, 0.1);
-                    background: rgba(0, 0, 0, 0.1);
-                }
+        /* Iconos en color blanco */
+        .nav-link-custom i {
+            color: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -217,7 +148,6 @@
 
     <!-- Carga de scripts necesarios para el funcionamiento del proyecto -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

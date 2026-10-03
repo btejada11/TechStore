@@ -41,5 +41,15 @@ namespace TechStore.Services
 
         public async Task<IEnumerable<Categoria>> ObtenerCategoriasAsync() =>
             await _context.Categorias.OrderBy(c => c.Nombre).ToListAsync();
+
+        public async Task<bool> ComprarProductoAsync(int id)
+        {
+            var producto = await _context.Productos.FindAsync(id);
+            if (producto == null || producto.Stock <= 0) return false;
+
+            producto.Stock--;
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

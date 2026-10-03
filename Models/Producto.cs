@@ -40,6 +40,9 @@ namespace TechStore.Models
         // Propiedad de navegación relacional
         [ForeignKey("CategoriaId")]
         public virtual Categoria? Categoria { get; set; }
+        [Required(ErrorMessage = "El stock es obligatorio.")]
+        [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo.")]
+        public int Stock { get; set; }
     }
 }
 
