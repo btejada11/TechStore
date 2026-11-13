@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -14,99 +16,94 @@
 
     <!-- Estilos exclusivos del menu lateral (Sidebar) -->
     <style>
-            /* Variables de color para el sidebar */
-            :root {
-                --sidebar-bg-start: #1B4079;
-                --sidebar-bg-end: #122d56;
-                --accent-glow: #00d2ff;
+        :root {
+            --sidebar-bg-start: #1B4079;
+            --sidebar-bg-end: #122d56;
+            --accent-glow: #00d2ff;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f4f6f9;
+            overflow-x: hidden;
+        }
+
+        .custom-sidebar {
+            background: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%) !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+        .brand-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            letter-spacing: 1.5px;
+            color: #ffffff;
+        }
+
+            .brand-title span {
+                color: var(--accent-glow);
             }
 
-            /* Tipografia general y fondo para el cuerpo de la pagina */
-            body {
-                font-family: 'Inter', sans-serif;
-                background-color: #f4f6f9;
-                overflow-x: hidden;
+        .menu-section-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 700;
+            padding: 12px 0 6px 16px;
+        }
+
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.75) !important;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.25s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+        }
+
+            .nav-link-custom:hover {
+                background: rgba(255, 255, 255, 0.12);
+                color: #ffffff !important;
+                transform: translateX(4px);
             }
 
-            /* Contenedor principal del sidebar */
-            .custom-sidebar {
-                background: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%) !important;
-                font-family: 'Plus Jakarta Sans', sans-serif;
-                border-right: 1px solid rgba(255, 255, 255, 0.08);
-                box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
-                z-index: 1000;
+            .nav-link-custom.active {
+                background: rgba(255, 255, 255, 0.2);
+                color: #ffffff !important;
+                font-weight: 600;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                border-left: 4px solid var(--accent-glow);
             }
 
-            /* Estilos del titulo / logo */
-            .brand-title {
-                font-family: 'Orbitron', sans-serif;
-                font-weight: 900;
-                font-size: 1.2rem;
-                letter-spacing: 1.5px;
+            .nav-link-custom i {
                 color: #ffffff;
+                font-size: 1.1rem;
             }
 
-                .brand-title span {
-                    color: var(--accent-glow);
-                }
+        button.nav-link-custom {
+            background: transparent;
+            border: 0;
+            width: 100%;
+            text-align: left;
+        }
 
-            /* Encabezados de seccion (Navegacion / Informacion) */
-            .menu-section-label {
-                font-size: 0.72rem;
-                text-transform: uppercase;
-                letter-spacing: 1.2px;
-                color: rgba(255, 255, 255, 0.5);
-                font-weight: 700;
-                padding: 12px 0 6px 16px;
-            }
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
 
-            /* Diseño base para las opciones del menu lateral */
-            .nav-link-custom {
-                color: rgba(255, 255, 255, 0.75) !important;
-                border-radius: 10px;
-                padding: 10px 14px;
-                font-weight: 500;
-                font-size: 0.95rem;
-                transition: all 0.25s ease-in-out;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                white-space: nowrap;
-            }
-
-                /* Efecto al pasar el mouse (Hover) */
-                .nav-link-custom:hover {
-                    background: rgba(255, 255, 255, 0.12);
-                    color: #ffffff !important;
-                    transform: translateX(4px);
-                }
-
-                /* Opcion activa seleccionada */
-                .nav-link-custom.active {
-                    background: rgba(255, 255, 255, 0.2);
-                    color: #ffffff !important;
-                    font-weight: 600;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                    border-left: 4px solid var(--accent-glow);
-                }
-
-                /* Iconos dentro del menu */
-                .nav-link-custom i {
-                    color: #ffffff;
-                    font-size: 1.1rem;
-                }
-
-            /* Pie del sidebar */
-            .sidebar-footer {
-                padding: 16px;
-                border-top: 1px solid rgba(255, 255, 255, 0.08);
-            }
-
-            /* Ajuste de contenedor principal para evitar scroll horizontal innecesario */
-            .main-content {
-                min-width: 0;
-                width: 100%;
-            }
+        .main-content {
+            min-width: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -168,6 +165,57 @@
                                 <span class="d-none d-sm-inline">Contactenos</span>
                             </a>
                         </li>
+
+                        <!-- Seccion 3: Cuenta (sesion y roles) -->
+                        <div class="menu-section-label d-none d-sm-block w-100 mt-2">Cuenta</div>
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="w-100">
+                                    <a asp-controller="Reportes" asp-action="Productos"
+                                       class="nav-link nav-link-custom @(currentController == "Reportes" ? "active" : "")">
+                                        <i class="bi bi-file-earmark-pdf-fill"></i>
+                                        <span class="d-none d-sm-inline">Reportes</span>
+                                    </a>
+                                </li>
+                            }
+
+                            <!-- Saludo estático del usuario (sin enlace ni redirección) -->
+                            <li class="w-100">
+                                <div class="nav-link nav-link-custom" style="cursor: default; opacity: 0.85;">
+                                    <i class="bi bi-person-circle"></i>
+                                    <span class="d-none d-sm-inline text-truncate" title="@User.Identity!.Name">Hola, @User.Identity!.Name</span>
+                                </div>
+                            </li>
+
+                            <li class="w-100">
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    <button type="submit" class="nav-link nav-link-custom">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                        <span class="d-none d-sm-inline">Cerrar sesión</span>
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="w-100">
+                                <a asp-controller="Account" asp-action="Login"
+                                   class="nav-link nav-link-custom @(currentController == "Account" && currentAction == "Login" ? "active" : "")">
+                                    <i class="bi bi-box-arrow-in-right"></i>
+                                    <span class="d-none d-sm-inline">Iniciar sesión</span>
+                                </a>
+                            </li>
+                            <li class="w-100">
+                                <a asp-controller="Account" asp-action="Register"
+                                   class="nav-link nav-link-custom @(currentController == "Account" && currentAction == "Register" ? "active" : "")">
+                                    <i class="bi bi-person-plus-fill"></i>
+                                    <span class="d-none d-sm-inline">Registrarse</span>
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
 
