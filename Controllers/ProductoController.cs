@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using TechStore.Models;
 using TechStore.Services;
 using TechStore.Reports; 
-using QuestPDF.Fluent;   
+using QuestPDF.Fluent;
+using ClosedXML.Excel;
 
 namespace TechStore.Controllers
 {
@@ -28,7 +29,7 @@ namespace TechStore.Controllers
         }
 
         // ==========================================
-        // ACCIÓN PARA GENERAR Y DESCARGAR EL PDF (Nuevo)
+        // ACCIÓN PARA GENERAR Y DESCARGAR EL PDF 
         // ==========================================
         [Authorize(Roles = "Admin,Vendedor")]
         [HttpGet]
@@ -36,19 +37,19 @@ namespace TechStore.Controllers
         {
             try
             {
-                // 1. Obtener la información usando el servicio existente
+                // Obtener la información usando el servicio existente
                 var productos = await _storeService.ObtenerProductosAsync();
 
-                // 2. Crear instancia del documento QuestPDF pasando la lista
+                // Crear instancia del documento QuestPDF pasando la lista
                 var documento = new ProductoDocument(productos);
 
-                // 3. Generar el arreglo de bytes del PDF
+                // Generar el arreglo de bytes del PDF
                 byte[] pdfBytes = documento.GeneratePdf();
 
-                // 4. Registrar en el Logger el evento de generación de reporte
+                // Registrar en el Logger el evento de generación de reporte
                 _logger.LogInformation("Reporte PDF de productos generado exitosamente por el usuario {Usuario}.", User.Identity?.Name);
 
-                // 5. Retornar el archivo para su descarga directa en el navegador
+                // Retornar el archivo para su descarga directa en el navegador
                 string nombreArchivo = $"Reporte_Productos_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
                 return File(pdfBytes, "application/pdf", nombreArchivo);
             }
@@ -60,6 +61,73 @@ namespace TechStore.Controllers
             }
         }
 
+        // ==========================================
+        // ACCIoN PARA EXPORTAR A EXCEL (ClosedXML)
+        // ==========================================
+        [Authorize(Roles = "Admin,Vendedor")]
+        [HttpGet]
+        public async Task<IActionResult> DescargarExcelProductos()
+        {
+            try
+            {
+                var productos = await _storeService.ObtenerProductosAsync();
+
+                using (var workbook = new XLWorkbook())
+                {
+                    var worksheet = workbook.Worksheets.Add("Inventario Productos");
+
+                    //Encabezados exactos solicitados en la rúbrica
+                    worksheet.Cell(1, 1).Value = "ID";
+                    worksheet.Cell(1, 2).Value = "Nombre";
+                    worksheet.Cell(1, 3).Value = "Descripción";
+                    worksheet.Cell(1, 4).Value = "Precio";
+                    worksheet.Cell(1, 5).Value = "Categoría";
+                    worksheet.Cell(1, 6).Value = "Stock";
+                    worksheet.Cell(1, 7).Value = "Estado";
+
+                    // Estilo visual para la fila de encabezados
+                    var rangoEncabezado = worksheet.Range("A1:G1");
+                    rangoEncabezado.Style.Font.Bold = true;
+                    rangoEncabezado.Style.Font.FontColor = XLColor.White;
+                    rangoEncabezado.Style.Fill.BackgroundColor = XLColor.FromHtml("#1B4079");
+
+                    //  Llenado de datos desde la base de datos
+                    int fila = 2;
+                    foreach (var item in productos)
+                    {
+                        worksheet.Cell(fila, 1).Value = item.Id;
+                        worksheet.Cell(fila, 2).Value = item.Nombre ?? "";
+                        worksheet.Cell(fila, 3).Value = item.Descripcion ?? "S/D";
+                        worksheet.Cell(fila, 4).Value = item.Precio;
+                        worksheet.Cell(fila, 5).Value = item.Categoria?.Nombre ?? "Sin Categoría";
+                        worksheet.Cell(fila, 6).Value = item.Stock;
+                        worksheet.Cell(fila, 7).Value = item.Estado.ToString();
+
+                        fila++;
+                    }
+
+                    worksheet.Columns().AdjustToContents();
+
+                    // Retornar el archivo .xlsx generado
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+
+                        _logger.LogInformation("Reporte Excel de productos generado exitosamente por el usuario {Usuario}.", User.Identity?.Name);
+
+                        string nombreArchivo = $"Reporte_Productos_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                        return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", nombreArchivo);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al exportar el reporte Excel de productos por el usuario {Usuario}.", User.Identity?.Name);
+                TempData["Error"] = "Ocurrió un error al generar el reporte Excel.";
+                return RedirectToAction(nameof(Index));
+            }
+        }
         // GET: Crear (solo Admin)
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
