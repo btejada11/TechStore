@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Catalogo de Productos";
+    bool esAdmin = User.IsInRole("Admin");
+    bool estaAutenticado = User.Identity?.IsAuthenticated ?? false;
 }
 
 <section class="container-fluid px-0 mb-4">
@@ -17,15 +19,18 @@
 </section>
 
 <section class="container-fluid px-2">
-    <!-- Acciones principales: Contador de productos disponibles y Boton Agregar Producto -->
+    <!-- Acciones principales: Contador de productos disponibles y Boton Agregar Producto (solo Admin) -->
     <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
         <span class="badge text-white px-3 py-2 rounded-pill fs-6 shadow-sm d-inline-flex align-items-center gap-2" style="background-color: #1B4079;">
             <i class="bi bi-box-seam-fill"></i> @Model.Count() Productos disponibles
         </span>
 
-        <a asp-action="Create" class="btn btn-success fw-bold px-4 py-2 shadow-sm rounded-pill d-inline-flex align-items-center gap-2">
-            <i class="bi bi-plus-circle-fill"></i> Agregar Producto
-        </a>
+        @if (esAdmin)
+        {
+            <a asp-action="Create" class="btn btn-success fw-bold px-4 py-2 shadow-sm rounded-pill d-inline-flex align-items-center gap-2">
+                <i class="bi bi-plus-circle-fill"></i> Agregar Producto
+            </a>
+        }
     </div>
 
     <!-- Avisos ocultos para alertas de SweetAlert -->
@@ -103,15 +108,18 @@
                                 }
                             </div>
 
-                            <!-- Botones de Editar y Eliminar -->
-                            <div class="d-flex gap-2 mb-2 mt-2">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm w-50 rounded-pill fw-semibold d-inline-flex align-items-center justify-content-center gap-1">
-                                    <i class="bi bi-pencil-square"></i> Editar
-                                </a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm w-50 rounded-pill fw-semibold d-inline-flex align-items-center justify-content-center gap-1">
-                                    <i class="bi bi-trash"></i> Eliminar
-                                </a>
-                            </div>
+                            <!-- Botones de Editar y Eliminar (solo Admin) -->
+                            @if (esAdmin)
+                            {
+                                <div class="d-flex gap-2 mb-2 mt-2">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm w-50 rounded-pill fw-semibold d-inline-flex align-items-center justify-content-center gap-1">
+                                        <i class="bi bi-pencil-square"></i> Editar
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm w-50 rounded-pill fw-semibold d-inline-flex align-items-center justify-content-center gap-1">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </a>
+                                </div>
+                            }
 
                             <!-- Pie de tarjeta con precio y boton comprar -->
                             <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
@@ -119,11 +127,22 @@
                                     <small class="text-muted d-block" style="font-size: 0.7rem;">Precio</small>
                                     <span class="fs-5 fw-bold text-dark">$@item.Precio.ToString("F2")</span>
                                 </div>
-                                <form asp-action="Comprar" asp-route-id="@item.Id" method="post">
-                                    <button type="submit" class="btn text-white btn-sm rounded-pill px-3 fw-semibold" style="background-color: #1B4079;" disabled="@(item.Stock == 0)">
-                                        <i class="bi bi-cart-plus me-1"></i> Comprar
-                                    </button>
-                                </form>
+
+                                @if (estaAutenticado)
+                                {
+                                    <form asp-action="Comprar" asp-route-id="@item.Id" method="post">
+                                        <button type="submit" class="btn text-white btn-sm rounded-pill px-3 fw-semibold" style="background-color: #1B4079;" disabled="@(item.Stock == 0)">
+                                            <i class="bi bi-cart-plus me-1"></i> Comprar
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path"
+                                       class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold">
+                                        <i class="bi bi-box-arrow-in-right me-1"></i> Inicia sesión
+                                    </a>
+                                }
                             </div>
                         </div>
 
