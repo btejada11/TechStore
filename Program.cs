@@ -81,3 +81,5 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+// Permite que el proyecto de pruebas pueda levantar la aplicación completa
+public partial class Program { }

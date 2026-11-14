@@ -128,18 +128,18 @@ namespace TechStore.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-        // GET: Crear (solo Admin)
-        [Authorize(Roles = "Admin")]
+        // GET: Crear (solo Admin y vendedor)
+        [Authorize(Roles = "Admin,Vendedor")]
         public async Task<IActionResult> Create()
         {
             ViewBag.Categorias = new SelectList(await _storeService.ObtenerCategoriasAsync(), "Id", "Nombre");
             return View();
         }
 
-        // POST: Crear (solo Admin)
+        // POST: Crear (solo Admin y vendedor)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Vendedor")]
         public async Task<IActionResult> Create(Producto producto)
         {
             if (ModelState.IsValid)
@@ -152,8 +152,8 @@ namespace TechStore.Controllers
             return View(producto);
         }
 
-        // GET: Editar (solo Admin)
-        [Authorize(Roles = "Admin")]
+        // GET: Editar (solo Admin y vendedor)
+        [Authorize(Roles = "Admin,Vendedor")]
         public async Task<IActionResult> Edit(int id)
         {
             var producto = await _storeService.ObtenerProductoPorIdAsync(id);
@@ -167,10 +167,10 @@ namespace TechStore.Controllers
             return View(producto);
         }
 
-        // POST: Editar (solo Admin)
+        // POST: Editar (solo Admin y vendedor)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Vendedor")]
         public async Task<IActionResult> Edit(int id, Producto producto)
         {
             if (id != producto.Id) return NotFound();
