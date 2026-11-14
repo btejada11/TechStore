@@ -16,7 +16,7 @@
         </p>
     </header>
 
-    <!-- 2. SECCIÓN DESTACADA: ¿En qué categorías nos enfocamos? -->
+    <!-- 2. SECCIÓN DESTACADA -->
     <section class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
         <div class="row g-0 align-items-center">
             <div class="col-md-8 p-4 p-md-5">
@@ -55,15 +55,18 @@
         </div>
     }
 
-    <!-- 3. ACCIONES PRINCIPALES: Contador y Botón Crear -->
+    <!-- 3. ACCIONES PRINCIPALES (Visible contador y botón restringido a Admin) -->
     <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
         <span class="badge text-white px-3 py-2 rounded-pill fs-6 shadow-sm d-inline-flex align-items-center gap-2" style="background-color: #1B4079;">
             <i class="bi bi-tags-fill"></i> @Model.Count() Categorías registradas
         </span>
 
-        <a asp-action="Create" class="btn btn-success fw-bold px-4 py-2 shadow-sm rounded-pill d-inline-flex align-items-center gap-2">
-            <i class="bi bi-plus-circle-fill"></i> Nueva Categoría
-        </a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" class="btn btn-success fw-bold px-4 py-2 shadow-sm rounded-pill d-inline-flex align-items-center gap-2">
+                <i class="bi bi-plus-circle-fill"></i> Nueva Categoría
+            </a>
+        }
     </div>
 
     <!-- 4. GRILLA DE CATEGORÍAS -->
@@ -100,15 +103,18 @@
                                 @categoria.Descripcion
                             </p>
 
-                            <!-- Acciones del CRUD (Editar / Eliminar) -->
-                            <div class="d-flex gap-2 pt-2 border-top mt-auto">
-                                <a asp-action="Edit" asp-route-id="@categoria.Id" class="btn btn-outline-warning btn-sm w-50 rounded-pill fw-semibold d-inline-flex align-items-center justify-content-center gap-1">
-                                    <i class="bi bi-pencil-square"></i> Editar
-                                </a>
-                                <a asp-action="Delete" asp-route-id="@categoria.Id" class="btn btn-outline-danger btn-sm w-50 rounded-pill fw-semibold d-inline-flex align-items-center justify-content-center gap-1">
-                                    <i class="bi bi-trash"></i> Eliminar
-                                </a>
-                            </div>
+                            <!-- Acciones CRUD (Solo visibles para Administradores) -->
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="d-flex gap-2 pt-2 border-top mt-auto">
+                                    <a asp-action="Edit" asp-route-id="@categoria.Id" class="btn btn-outline-warning btn-sm w-50 rounded-pill fw-semibold d-inline-flex align-items-center justify-content-center gap-1">
+                                        <i class="bi bi-pencil-square"></i> Editar
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@categoria.Id" class="btn btn-outline-danger btn-sm w-50 rounded-pill fw-semibold d-inline-flex align-items-center justify-content-center gap-1">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </a>
+                                </div>
+                            }
                         </div>
 
                     </div>
@@ -116,5 +122,4 @@
             }
         }
     </div>
-
 </div>
