@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TechStore.Models;
 using TechStore.Services;
+using TechStore.Reports; 
+using QuestPDF.Fluent;   
 
 namespace TechStore.Controllers
 {
@@ -23,6 +25,39 @@ namespace TechStore.Controllers
         {
             var productos = await _storeService.ObtenerProductosAsync();
             return View(productos);
+        }
+
+        // ==========================================
+        // ACCIÓN PARA GENERAR Y DESCARGAR EL PDF (Nuevo)
+        // ==========================================
+        [Authorize(Roles = "Admin,Vendedor")]
+        [HttpGet]
+        public async Task<IActionResult> DescargarPdfProductos()
+        {
+            try
+            {
+                // 1. Obtener la información usando el servicio existente
+                var productos = await _storeService.ObtenerProductosAsync();
+
+                // 2. Crear instancia del documento QuestPDF pasando la lista
+                var documento = new ProductoDocument(productos);
+
+                // 3. Generar el arreglo de bytes del PDF
+                byte[] pdfBytes = documento.GeneratePdf();
+
+                // 4. Registrar en el Logger el evento de generación de reporte
+                _logger.LogInformation("Reporte PDF de productos generado exitosamente por el usuario {Usuario}.", User.Identity?.Name);
+
+                // 5. Retornar el archivo para su descarga directa en el navegador
+                string nombreArchivo = $"Reporte_Productos_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+                return File(pdfBytes, "application/pdf", nombreArchivo);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al generar el reporte PDF de productos por el usuario {Usuario}.", User.Identity?.Name);
+                TempData["Error"] = "Ocurrió un error al generar el reporte PDF.";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // GET: Crear (solo Admin)
