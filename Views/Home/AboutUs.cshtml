@@ -37,50 +37,34 @@
     </section>
 
     <!-- Misión, Visión y Valores -->
-    <section class="row g-4">
-        <!-- Nuestra Misión -->
-        <div class="col-12 col-md-4">
-            <article class="card border-0 shadow-sm rounded-4 h-100">
-                <div class="card-body p-4 d-flex flex-column">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 50px; height: 50px; background-color: rgba(27, 64, 121, 0.1);">
-                        <i class="bi bi-rocket-takeoff fs-4" style="color: #1B4079;"></i>
-                    </div>
-                    <h3 class="h5 fw-bold text-dark mb-2">Nuestra Misión</h3>
-                    <p class="text-muted small mb-0 flex-grow-1">
-                        Nuestro propósito es proporcionar productos y servicios innovadores que realmente transformen la vida de quienes confían en nosotros. Con un equipo competente y comprometido con la excelencia, buscamos constantemente nuevas formas de mejorar y evolucionar en un mundo tecnológico en constante cambio.
-                    </p>
-                </div>
-            </article>
-        </div>
+    
+@using TechStore.Models
 
-        <!-- Nuestra Visión -->
-        <div class="col-12 col-md-4">
-            <article class="card border-0 shadow-sm rounded-4 h-100">
-                <div class="card-body p-4 d-flex flex-column">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 50px; height: 50px; background-color: rgba(27, 64, 121, 0.1);">
-                        <i class="bi bi-eye fs-4" style="color: #1B4079;"></i>
-                    </div>
-                    <h3 class="h5 fw-bold text-dark mb-2">Nuestra Visión</h3>
-                    <p class="text-muted small mb-0 flex-grow-1">
-                        Ser reconocidos como una compañía líder en soluciones tecnológicas, destacando por nuestra capacidad de innovación y la calidad de nuestros productos en cada mercado donde participamos.
-                    </p>
-                </div>
-            </article>
-        </div>
+<!-- Misión, Visión y Valores -->
+<section class="row g-4">
 
-        <!-- Nuestros Valores -->
-        <div class="col-12 col-md-4">
-            <article class="card border-0 shadow-sm rounded-4 h-100">
-                <div class="card-body p-4 d-flex flex-column">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 50px; height: 50px; background-color: rgba(27, 64, 121, 0.1);">
-                        <i class="bi bi-shield-check fs-4" style="color: #1B4079;"></i>
-                    </div>
-                    <h3 class="h5 fw-bold text-dark mb-2">Nuestros Valores</h3>
-                    <p class="text-muted small mb-0 flex-grow-1">
-                        El compromiso, la honestidad, el trabajo en equipo y la innovación son los pilares que guían cada una de nuestras decisiones y acciones como compañía.
-                    </p>
-                </div>
-            </article>
-        </div>
-    </section>
+    @await Html.PartialAsync("_InfoCard", new InfoCardViewModel
+    {
+        Titulo = "Nuestra Misión",
+        Icono = "bi-rocket-takeoff",
+        Descripcion = "Nuestro propósito es proporcionar productos y servicios innovadores que realmente transformen la vida de quienes confían en nosotros. Con un equipo competente y comprometido con la excelencia, buscamos constantemente nuevas formas de mejorar y evolucionar en un mundo tecnológico en constante cambio."
+    })
+
+    @await Html.PartialAsync("_InfoCard", new InfoCardViewModel
+    {
+        Titulo = "Nuestra Visión",
+        Icono = "bi-eye",
+        Descripcion = "Ser reconocidos como una compañía líder en soluciones tecnológicas, destacando por nuestra capacidad de innovación y la calidad de nuestros productos en cada mercado donde participamos."
+    })
+
+    @await Html.PartialAsync("_InfoCard", new InfoCardViewModel
+    {
+        Titulo = "Nuestros Valores",
+        Icono = "bi-shield-check",
+        Descripcion = "El compromiso, la honestidad, el trabajo en equipo y la innovación son los pilares que guían cada una de nuestras decisiones y acciones como compañía."
+    })
+
+</section>
+
+
 </div>

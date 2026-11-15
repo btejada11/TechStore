@@ -1,5 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
+﻿
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -107,123 +107,12 @@
     </style>
 </head>
 <body>
-    @{
-        string currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
-        string currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
-    }
 
     <div class="container-fluid p-0">
         <div class="row g-0 flex-nowrap min-vh-100">
 
-            <!-- PANEL LATERAL IZQUIERDO (SIDEBAR) -->
-            <div class="col-auto col-md-3 col-lg-2 px-0 custom-sidebar d-flex flex-column justify-content-between">
-                <div class="d-flex flex-column align-items-center align-items-sm-start text-white w-100">
-
-                    <!-- Encabezado con Logo -->
-                    <a asp-controller="Home" asp-action="Index" class="d-flex align-items-center py-4 px-3 mb-2 text-white text-decoration-none border-bottom border-white border-opacity-10 w-100 justify-content-center justify-content-sm-start">
-                        <span class="brand-title ps-sm-2">TECH<span>STORE</span></span>
-                    </a>
-
-                    <!-- Seccion 1: Navegacion Principal -->
-                    <div class="menu-section-label d-none d-sm-block w-100">Navegacion</div>
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100 px-2" id="menu">
-                        <li class="nav-item w-100">
-                            <a asp-controller="Home" asp-action="Index"
-                               class="nav-link nav-link-custom @(currentController == "Home" && currentAction == "Index" ? "active" : "")">
-                                <i class="bi bi-house-door-fill"></i>
-                                <span class="d-none d-sm-inline">Inicio</span>
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a asp-controller="Producto" asp-action="Index"
-                               class="nav-link nav-link-custom @(currentController == "Producto" ? "active" : "")">
-                                <i class="bi bi-grid-fill"></i>
-                                <span class="d-none d-sm-inline">Productos</span>
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a asp-controller="Categoria" asp-action="Index"
-                               class="nav-link nav-link-custom @(currentController == "Categoria" ? "active" : "")">
-                                <i class="bi bi-tags-fill"></i>
-                                <span class="d-none d-sm-inline">Categorias</span>
-                            </a>
-                        </li>
-
-                        <!-- Seccion 2: Informacion del Sistema -->
-                        <div class="menu-section-label d-none d-sm-block w-100 mt-2">Informacion</div>
-                        <li class="w-100">
-                            <a asp-controller="Home" asp-action="AboutUs"
-                               class="nav-link nav-link-custom @(currentController == "Home" && currentAction == "AboutUs" ? "active" : "")">
-                                <i class="bi bi-info-circle-fill"></i>
-                                <span class="d-none d-sm-inline">Acerca de</span>
-                            </a>
-                        </li>
-                        <li class="w-100">
-                            <a asp-controller="Home" asp-action="Contactenos"
-                               class="nav-link nav-link-custom @(currentController == "Home" && currentAction == "Contactenos" ? "active" : "")">
-                                <i class="bi bi-envelope-fill"></i>
-                                <span class="d-none d-sm-inline">Contactenos</span>
-                            </a>
-                        </li>
-
-                        <!-- Seccion 3: Cuenta (sesion y roles) -->
-                        <div class="menu-section-label d-none d-sm-block w-100 mt-2">Cuenta</div>
-
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <li class="w-100">
-                                    <a asp-controller="Reportes" asp-action="Productos"
-                                       class="nav-link nav-link-custom @(currentController == "Reportes" ? "active" : "")">
-                                        <i class="bi bi-file-earmark-pdf-fill"></i>
-                                        <span class="d-none d-sm-inline">Reportes</span>
-                                    </a>
-                                </li>
-                            }
-
-                            <!-- Saludo estático del usuario (sin enlace ni redirección) -->
-                            <li class="w-100">
-                                <div class="nav-link nav-link-custom" style="cursor: default; opacity: 0.85;">
-                                    <i class="bi bi-person-circle"></i>
-                                    <span class="d-none d-sm-inline text-truncate" title="@User.Identity!.Name">Hola, @User.Identity!.Name</span>
-                                </div>
-                            </li>
-
-                            <li class="w-100">
-                                <form asp-controller="Account" asp-action="Logout" method="post">
-                                    <button type="submit" class="nav-link nav-link-custom">
-                                        <i class="bi bi-box-arrow-right"></i>
-                                        <span class="d-none d-sm-inline">Cerrar sesión</span>
-                                    </button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="w-100">
-                                <a asp-controller="Account" asp-action="Login"
-                                   class="nav-link nav-link-custom @(currentController == "Account" && currentAction == "Login" ? "active" : "")">
-                                    <i class="bi bi-box-arrow-in-right"></i>
-                                    <span class="d-none d-sm-inline">Iniciar sesión</span>
-                                </a>
-                            </li>
-                            <li class="w-100">
-                                <a asp-controller="Account" asp-action="Register"
-                                   class="nav-link nav-link-custom @(currentController == "Account" && currentAction == "Register" ? "active" : "")">
-                                    <i class="bi bi-person-plus-fill"></i>
-                                    <span class="d-none d-sm-inline">Registrarse</span>
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-
-                <!-- Pie de pagina del sidebar -->
-                <div class="sidebar-footer text-center text-sm-start w-100">
-                    <span class="text-white-50 small d-none d-sm-inline fw-semibold ps-sm-2">TechStore System &copy; 2026</span>
-                </div>
-            </div>
+            
+             @await Component.InvokeAsync("Sidebar")
 
             <!-- CONTENIDO PRINCIPAL DERECHO (Renderizado dinamico) -->
             <div class="col main-content py-3 px-3 px-md-4 d-flex flex-column justify-content-between">
