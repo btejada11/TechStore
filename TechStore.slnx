@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="../TechStoreTests/TechStoreTests.csproj" Id="32daf2d1-2892-48c1-bef1-41b4bc3ae68e" />
   <Project Path="TechStore.csproj" />
+  <Project Path="TechStore.Tests/TechStore.Tests.csproj" />
 </Solution>

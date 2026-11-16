@@ -20,8 +20,11 @@
 		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="9.0.21" />
 	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="QuestPDF" Version="2026.9.2" />
-  </ItemGroup>
+	<!-- Excluir el proyecto de pruebas de la compilación web -->
+	<ItemGroup>
+		<Compile Remove="TechStore.Tests\**\*.cs" />
+		<Content Remove="TechStore.Tests\**\*" />
+		<None Remove="TechStore.Tests\**\*" />
+	</ItemGroup>
 
 </Project>
